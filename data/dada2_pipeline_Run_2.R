@@ -58,6 +58,12 @@ errR <- learnErrors(filtRs2, multithread = TRUE)
 #Error rates drop with increased quality as expected
 plotErrors(errF, nominalQ = TRUE)
 
+# ######https://github.com/benjjneb/dada2/issues/710 trouble shooting: Jared added
+# exists <- file.exists(filtFs)
+# exists
+# filtFs <- filtFs[exists]
+# filtFs
+
 #Sample Inference
 #Apply the core sample inferene algorithm to the filtered and trimmed sequence data
 dadaFs <- dada(filtFs2, err=errF, multithread=TRUE)
@@ -128,6 +134,7 @@ sum(seqtab2.nochim)/sum(seqtab)
 #As a final check of progress, look at the number of reads that mde it through each step in the pipeoine
 getN <- function(x) sum(getUniques(x))
 track <- cbind(out, sapply(dadaFs, getN), sapply(dadaRs, getN), sapply(mergers, getN), rowSums(seqtab2.nochim))
+
 colnames(track) <- c("input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
 rownames(track) <- sample.names
 head(track)
